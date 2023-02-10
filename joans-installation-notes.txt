@@ -1,0 +1,59 @@
+2023.02.09
+Trying to install using Ubuntu 20 and conda
+
+By default in Ubuntu python3.8 is installed.
+
+I first try to install deepmimic using python3.8, which is the one build by default in Ubuntu 20. It builds, but then it does not work at runtime.
+
+
+I therefore: install 3.6, 
+to do so, using suggestion from https://askubuntu.com/questions/1231543/problem-with-creating-python-3-6-virtual-environment-on-ubuntu-20-04
+I do:
+
+sudo add-apt-repository ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get install python3.6
+
+Also:
+sudo apt-get install python3.6-dev
+
+then I fork and clone the DeepMimic repo
+
+
+> git clone https://github.com/joanllobera/DeepMimic.git
+
+run the install in DeepMimicCore:
+~/DeepMimic/DeepMimicCore$ sudo ./build.sh 
+Then:
+> conda create --name mimic1 python=3.6
+> conda activate mimic1
+
+and, following the README instructions, what is needed for the python packages:
+
+
+- MPI 
+  - Windows: https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi
+  - Linux: `sudo apt install libopenmpi-dev`
+
+
+Python:
+
+- Python 3
+- PyOpenGL (http://pyopengl.sourceforge.net/) 
+
+``pip install PyOpenGL PyOpenGL_accelerate``
+
+- Tensorflow (https://www.tensorflow.org/) ( Vesrion : 1.13.1 )
+
+``pip install tensorflow==1.13.1`` 
+
+- MPI4Py (https://mpi4py.readthedocs.io/en/stable/install.html)
+
+``pip install mpi4py``
+
+And then, the runtime instruction, to test it works:
+
+python DeepMimic.py --arg_file args/run_humanoid3d_spinkick_args.txt
+
+
+
