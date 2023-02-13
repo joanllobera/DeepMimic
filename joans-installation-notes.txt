@@ -1,38 +1,93 @@
-2023.02.09
-Trying to install using Ubuntu 20 and conda
 
-By default in Ubuntu python3.8 is installed.
+This installation guide works to run DeepMimics on a fresh Ubuntu20 installation.
 
-I first try to install deepmimic using python3.8, which is the one build by default in Ubuntu 20. It builds, but then it does not work at runtime.
+It also assumes the use of anaconda to create the virtual environment (although not strictly needed).
+
+---------------------------------
+first version: 2023.02.09
+reviewed with an installation form scratch:  2023.02.10
+
+-------------------
+considerations:
+trying to install in ubuntu 22 is a nightmare due to the versions of python needed being very old.
+
+when trying to install using Ubuntu 20, by default in Ubuntu python3.8 is installed.
+
+Installing deepmimic using python3.8, which is the one build by default in Ubuntu 20. It builds, but then it does not work at runtime.
 
 
-I therefore: install 3.6, 
-to do so, using suggestion from https://askubuntu.com/questions/1231543/problem-with-creating-python-3-6-virtual-environment-on-ubuntu-20-04
+I therefore: install python 3.6, in ubuntu 20.
+
+
+--------------------------
+
 I do:
 
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt-get update
-sudo apt-get install python3.6
+>sudo add-apt-repository ppa:deadsnakes/ppa
+>sudo apt-get update
+>sudo apt-get install python3.6
 
-Also:
-sudo apt-get install python3.6-dev
+Also, to compile you need the development headers. Do:
+
+>sudo apt-get install python3.6-dev
+
+
+Then install the dependencies listed in the readme:
+
+
+``sudo apt install libgl1-mesa-dev libx11-dev libxrandr-dev libxi-dev``
+
+``sudo apt install mesa-utils``
+
+``sudo apt install clang``
+
+``sudo apt install cmake``
+
+
+you will also need
+
+> sudo apt install mesa-common-dev
+> sudo apt install freeglut3-dev
+> sudo apt-get install libglew-dev
+
+
+
+To run the install in DeepMimicCore:
+
+If its a fresh installation of Ubuntu, you will also need a c++ compiler:
+
+> sudo apt install build-essential
+
+> sudo apt install git
 
 then I fork and clone the DeepMimic repo
 
-
 > git clone https://github.com/joanllobera/DeepMimic.git
 
-run the install in DeepMimicCore:
+
+
+
 ~/DeepMimic/DeepMimicCore$ sudo ./build.sh 
 Then:
+
+(optional) to install anaconda
+
+>  wget https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh
+>  bash Anaconda3-2022.05-Linux-x86_64.sh
+
+
+open a new terminal windows to load the conda .bash script
+Then:
+
+
 > conda create --name mimic1 python=3.6
 > conda activate mimic1
 
 and, following the README instructions, what is needed for the python packages:
 
-
+(from now, mandatory:)
 - MPI 
-  - Windows: https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi
+
   - Linux: `sudo apt install libopenmpi-dev`
 
 
@@ -53,7 +108,9 @@ Python:
 
 And then, the runtime instruction, to test it works:
 
-python DeepMimic.py --arg_file args/run_humanoid3d_spinkick_args.txt
+> python DeepMimic.py --arg_file args/run_humanoid3d_spinkick_args.txt
+
+
 
 
 
