@@ -24,12 +24,13 @@ I therefore: install python 3.6, in ubuntu 20.
 I do:
 
 >sudo add-apt-repository ppa:deadsnakes/ppa
->sudo apt-get update
->sudo apt-get install python3.6
+>sudo apt update
+>sudo apt upgrade
+>sudo apt install python3.6
 
 Also, to compile you need the development headers. Do:
 
->sudo apt-get install python3.6-dev
+>sudo apt install python3.6-dev
 
 
 Then install the dependencies listed in the readme:
@@ -65,27 +66,18 @@ then I fork and clone the DeepMimic repo
 > git clone https://github.com/joanllobera/DeepMimic.git
 
 
+Also, I will need patchelf to deal with the path, so:
+
+I install PIP:
+> sudo apt install pip
+This allows you to install something needed by the isntallation script:
+> sudo pip install patchelf
 
 
 ~/DeepMimic/DeepMimicCore$ sudo ./build.sh 
-Then:
-
-(optional) to install anaconda
-
->  wget https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh
->  bash Anaconda3-2022.05-Linux-x86_64.sh
+Then, following the README instructions, what is needed for the python packages:
 
 
-open a new terminal windows to load the conda .bash script
-Then:
-
-
-> conda create --name mimic1 python=3.6
-> conda activate mimic1
-
-and, following the README instructions, what is needed for the python packages:
-
-(from now, mandatory:)
 - MPI 
 
   - Linux: `sudo apt install libopenmpi-dev`
@@ -93,7 +85,7 @@ and, following the README instructions, what is needed for the python packages:
 
 Python:
 
-- Python 3
+- Python 3 (Already done, specifically we need python3.6)
 - PyOpenGL (http://pyopengl.sourceforge.net/) 
 
 ``pip install PyOpenGL PyOpenGL_accelerate``
@@ -102,13 +94,69 @@ Python:
 
 ``pip install tensorflow==1.13.1`` 
 
+IF IT DOESN't WORK, Alternative to install tensorflow using conda:
+
+
+>  wget https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh
+>  bash Anaconda3-2022.05-Linux-x86_64.sh
+
+
+open a new terminal windows to load the conda .bash script
+Then:
+
+> conda update -n base -c defaults conda
+if it doesn't work, do:
+> conda update --all
+if it still doesn't update, you can do:
+
+conda install -n base conda=23.1.0 
+
+
+> conda create --name mimic1 python=3.6
+> conda activate mimic1
+
+> pip install tensorflow==1.13.1 #important that it is in pip, not conda!
+
+in this case you will also need:
+> pip install opengl
+> pip install pyopengl-accelerate
+
 - MPI4Py (https://mpi4py.readthedocs.io/en/stable/install.html)
 
-``pip install mpi4py``
+If it is not installed already
+> pip install mpi4py
+
+
+
+If you are on a remote machine, a remote desktop:
+
+To Install Remote Desktop Protocol (RDP) server xrdp on the Ubuntu 20.04 desktop. 
+To do so execute the following command:
+
+> sudo apt install xrdp
+
+Enable to start after reboot and run the remote desktop sharing server xrdp:
+
+> sudo systemctl enable --now xrdp
+
+Still on the Ubuntu 20.04 desktop, open a firewall port 3389 for an incoming traffic:
+
+> sudo ufw allow from any to any port 3389 proto tcp
+
+
+Move to Windows 10 host and open the Remote Desktop Connection client.  
+(see https://linuxconfig.org/ubuntu-20-04-remote-desktop-access-from-windows-10)
 
 And then, the runtime instruction, to test it works:
 
 > python DeepMimic.py --arg_file args/run_humanoid3d_spinkick_args.txt
+
+Note: The runtime will NOT Work using this RDP connection. It will create a segfault exception. 
+However, running this locally on the computer should work.
+
+Note2: i also changed the graphics drivers, from the XRDP default ones to nvidia ones.
+
+
 
 
 
